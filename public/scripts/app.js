@@ -49,7 +49,19 @@ $(document).ready(function() {
     for(let i=0;i<albums.length;i++){
       $('#albums').append(renderAlbum(albums[i]));
     }
-
+    $('.form-horizontal').submit(function(event){
+      event.preventDefault();
+      var cereal = $(this).serialize();
+      console.log(cereal);
+      $.ajax({
+        method: 'POST',
+        url:'/api/albums',
+        data: cereal,
+      })
+      .then(function(data){
+        $('#albums').append(renderAlbum(data));
+      })
+    })
   })
 })
 
@@ -87,6 +99,11 @@ function renderAlbum(album) {
                           <li class="list-group-item">
                             <h4 class='inline-header'>Released date:</h4>
                             <span class='album-releaseDate'>${album.releaseDate}</span>
+                          </li>
+
+                          <li class="list-group-item">
+                            <h4 class='inline-header'>Genre:</h4>
+                            <span class='genres'> ${album.genres}</span>
                           </li>
                         </ul>
                       </div>
